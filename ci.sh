@@ -4,9 +4,10 @@
 echo $DOCKER_PASSWORD | docker login -u $DOCKER_USERNAME --password-stdin &> /dev/null
 
 if [ "$TRAVIS_PULL_REQUEST" = "true" ] || [ "$TRAVIS_BRANCH" != "master" ]; then
+#    --platform=linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x \
   docker buildx build \
     --progress plain \
-    --platform=linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x \
+    --platform=linux/arm64 \
     -t $DOCKER_REPO:$TRAVIS_BRANCH \
     --push \
     .
@@ -15,9 +16,16 @@ fi
 
 TAG="${TRAVIS_TAG:-latest}"
 echo "TAG: $TAG"
+#docker buildx build \
+#     --progress plain \
+#    --platform=linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x \
+#    -t $DOCKER_REPO:$TAG \
+#    --push \
+#    .
+
 docker buildx build \
-     --progress plain \
-    --platform=linux/amd64,linux/386,linux/arm64,linux/arm/v7,linux/arm/v6,linux/ppc64le,linux/s390x \
+    --progress plain \
+    --platform=linux/arm64 \
     -t $DOCKER_REPO:$TAG \
     --push \
     .
